@@ -1,0 +1,23 @@
+// Task 13: Search Books by Title
+
+async function findBooksByTitle(titleQuery) {
+  if (typeof titleQuery !== "string" || !titleQuery.trim()) {
+    console.warn("Invalid title input. Please enter a non-empty string.");
+    return [];
+  }
+
+  const endpoint = `http://localhost:3000/api/books/title/${encodeURIComponent(titleQuery.trim())}`;
+
+  try {
+    const { data } = await axios.get(endpoint);
+    console.info("Search Results for:", titleQuery, "\n", data);
+    return data;
+  } catch (err) {
+    const msg = err.response?.data?.message || err.message || "Unknown error occurred.";
+    console.error("Failed to retrieve books:", msg);
+    return [];
+  }
+}
+
+// Example usage
+findBooksByTitle("sample").then(() => console.log("Search complete."));
